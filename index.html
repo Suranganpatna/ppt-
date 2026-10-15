@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kindness — Class 10G Assembly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   KINDNESS — CLASS 10G ASSEMBLY · 22 slides
+   1 Landing · 2 Anchoring · 3 Prayer (Choir) · 4 Thought of the
+   Day · 5 Word of the Day (altruism) · 6 Quiz intro
+   7–18 Quiz (6 MCQ + green-answer reveals) · 19 Speech
+   20 Announcements · 21 Words of Wisdom · 22 National Anthem
+   Palette: cream #FAF5EC · gold #E8B84B · deep gold #C9962F
+            muted orange #C97B45 · charcoal #26221C · olive #4A5438
+            answer-green #4E9A62 / #2F6B41
+   Motion: crossfade-push (0.85s) · traveling golden light (1.6s)
+   staggered reveals (0.9s) · slow Ken Burns scenes (16–20s)
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:#0F0D0B}
+body{font-family:'Montserrat','Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0}
+#deck{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:1920px;height:1080px;overflow:hidden;background:#141210;user-select:none;cursor:default}
+
+/* ---------- slides & cinematic slide transition ---------- */
+.slide{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:1;will-change:transform,opacity;
+  transition:opacity .85s cubic-bezier(.45,0,.2,1),transform .85s cubic-bezier(.45,0,.2,1)}
+.slide.active{opacity:1;z-index:3;transform:none}
+.slide.leaving{opacity:0;z-index:2;transform:translateX(var(--lx2,-2.2%)) scale(.992)}
+
+/* ---------- scenes (slow cinematic zoom) ---------- */
+.scene{position:absolute;inset:0;overflow:hidden}
+.slide.live .scene{animation:kb var(--kbd,16s) ease-out forwards}
+@keyframes kb{from{transform:scale(var(--kb-from,1.03))}to{transform:scale(var(--kb-to,1.09))}}
+
+/* ---------- entrances: staggered, gentle, 0.5–1.2s ---------- */
+[data-anim]{opacity:0;transform:translateY(28px);filter:blur(10px);
+  transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1),
+             filter .9s cubic-bezier(.22,1,.36,1),letter-spacing 1.4s ease}
+.slide.live [data-anim]{opacity:1;transform:none;filter:none;transition-delay:var(--d,0s)}
+[data-fade]{opacity:0;filter:blur(6px);transition:opacity 1.1s ease,filter 1.1s ease}
+.slide.live [data-fade]{opacity:1;filter:none;transition-delay:var(--d,0s)}
+[data-draw]{transform:scaleX(0);transform-origin:left center;transition:transform 1.1s cubic-bezier(.22,1,.36,1)}
+[data-draw].centered{transform-origin:center}
+.slide.live [data-draw]{transform:scaleX(1);transition-delay:var(--d,0s)}
+.draw{stroke-dasharray:1;stroke-dashoffset:1}
+.slide.live .draw{animation:drawIn 1.4s cubic-bezier(.4,0,.2,1) forwards;animation-delay:var(--dd,.5s)}
+@keyframes drawIn{to{stroke-dashoffset:0}}
+
+/* ---------- typography ---------- */
+.h-display{font-family:'Playfair Display',Georgia,serif;font-weight:600;line-height:1.12;letter-spacing:.005em;color:#F7ECD5}
+.h-display em{font-style:italic;font-weight:500;color:#FFE9BE}
+.ink{color:#2B2721}
+.kicker{font-weight:600;letter-spacing:.42em;text-transform:uppercase}
+.rule{height:2px;background:linear-gradient(90deg,#E8B84B,rgba(232,184,75,0))}
+.rule.centered{margin:0 auto;background:linear-gradient(90deg,rgba(232,184,75,0),#E8B84B 30%,#E8B84B 70%,rgba(232,184,75,0))}
+
+/* ---------- the traveling golden light (Morph motif) ---------- */
+#lightfx{position:absolute;inset:0;z-index:6;pointer-events:none;mix-blend-mode:screen;--lx:50%;--ly:50%;--ls:2px;--lo:0}
+#lightfx .orb{position:absolute;left:var(--lx);top:var(--ly);width:var(--ls);height:var(--ls);
+  transform:translate(-50%,-50%);border-radius:50%;opacity:var(--lo);
+  background:radial-gradient(circle,rgba(255,216,142,.95) 0%,rgba(255,190,110,.5) 30%,rgba(255,170,90,.16) 55%,rgba(255,170,90,0) 70%);
+  transition:left 1.6s cubic-bezier(.4,0,.2,1),top 1.6s cubic-bezier(.4,0,.2,1),
+             width 1.6s cubic-bezier(.4,0,.2,1),height 1.6s cubic-bezier(.4,0,.2,1),opacity 1.6s ease}
+
+/* ---------- cinema layers ---------- */
+#vignette{position:absolute;inset:0;z-index:7;pointer-events:none;
+  background:radial-gradient(120% 92% at 50% 44%,transparent 55%,rgba(24,18,10,.26) 100%)}
+#grain{position:absolute;inset:0;z-index:8;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>")}
+
+/* ---------- atmosphere: dust motes ---------- */
+.motes{position:absolute;pointer-events:none}
+.beam .motes{position:absolute;inset:0}
+.motes span{position:absolute;border-radius:50%;opacity:0;
+  background:radial-gradient(circle,#FFE9B8,rgba(255,220,150,0) 72%);filter:blur(.5px)}
+.slide.live .motes span{animation:mote var(--md) var(--mdel) linear infinite}
+@keyframes mote{0%{opacity:0;transform:translate(0,0)}12%{opacity:var(--mo)}78%{opacity:var(--mo)}100%{opacity:0;transform:translate(var(--mdx),var(--mdy))}}
+
+/* ---------- shared sun emblem ---------- */
+.sunmark{width:84px;height:84px}
+.sunmark.big{width:96px;height:96px}
+
+/* ============ SLIDE 01 — LANDING : golden-hour field ============ */
+.s1 .sky{position:absolute;inset:0;background:
+  radial-gradient(1150px 640px at 63% 57%,rgba(255,242,205,.9),rgba(255,216,150,.45) 42%,rgba(255,200,130,0) 72%),
+  linear-gradient(180deg,#B4703E 0%,#CF8E55 26%,#E5B075 52%,#F3D19B 76%,#FBEBC6 100%)}
+.s1 .scrim{position:absolute;left:50%;top:300px;width:1560px;height:560px;transform:translateX(-50%);
+  background:radial-gradient(50% 50% at 50% 50%,rgba(66,30,6,.36),rgba(66,30,6,0) 72%);filter:blur(28px)}
+.sun-disc{position:absolute;width:170px;height:170px;border-radius:50%;
+  background:radial-gradient(circle,#FFF8E2 0%,#FFEAB2 45%,rgba(255,225,160,0) 72%)}
+.s1 .sun-disc{left:63%;top:57%;margin:-85px 0 0 -85px}
+.slide.live .sun-disc{animation:sunPulse 7s ease-in-out infinite}
+@keyframes sunPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.ray{position:absolute;left:1210px;top:616px;height:150px;transform-origin:0 50%;
+  background:linear-gradient(90deg,rgba(255,238,196,.20),rgba(255,238,196,0) 72%);filter:blur(12px)}
+.ray.r1{width:1150px;transform:rotate(15deg)}
+.ray.r2{width:1050px;transform:rotate(-9deg)}
+.ray.r3{width:640px;transform:rotate(3deg);opacity:.6}
+.hills{position:absolute;inset:0;width:100%;height:100%}
+.haze{position:absolute;left:0;right:0;top:590px;height:230px;
+  background:linear-gradient(180deg,rgba(255,228,166,0),rgba(255,228,166,.26),rgba(255,228,166,0));filter:blur(6px)}
+.s1-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding-top:252px;text-align:center}
+.s1-content h1{font-size:96px;text-shadow:0 6px 60px rgba(60,26,3,.45)}
+.s1-content .rule{width:130px;margin-top:46px}
+.s1-content .byline{margin-top:36px;font-size:22px;font-weight:500;color:#FBEBC8;letter-spacing:.48em;text-transform:uppercase}
+
+/* ============ SLIDE 02 — ANCHORING : Aanya & Suhani ============ */
+.bg-dark{position:absolute;inset:0;background:radial-gradient(1500px 900px at 50% 118%,#3B3226 0%,#2A251F 48%,#211D18 100%)}
+.stage-line{position:absolute;left:26%;right:26%;top:545px;height:1.5px;
+  background:linear-gradient(90deg,rgba(232,184,75,0),rgba(232,184,75,.28),rgba(232,184,75,0))}
+.s2-h{position:absolute;top:118px;left:0;right:0;text-align:center;font-size:84px}
+.lamp{position:absolute;width:26px;height:26px;border-radius:50%;
+  background:radial-gradient(circle,#FFF6DC,#FFD98F 60%,rgba(255,200,120,0) 100%);
+  box-shadow:0 0 42px 12px rgba(255,190,110,.5),0 0 130px 52px rgba(255,170,90,.2)}
+.lamp.l1{left:520px;top:437px}.lamp.l2{left:1400px;top:437px}
+.lamp-refl{position:absolute;width:210px;height:24px;
+  background:radial-gradient(50% 50%,rgba(255,205,130,.26),rgba(255,205,130,0) 72%);filter:blur(6px)}
+.lamp-refl.p1{left:415px;top:486px}.lamp-refl.p2{left:1295px;top:486px}
+.arc{position:absolute;left:460px;top:400px;width:1000px;height:300px}
+.arc path{stroke:#E8B84B;stroke-width:2.5;fill:none;opacity:.75}
+.name2{position:absolute;top:636px;width:260px;margin-left:-130px;text-align:center;
+  font-size:24px;font-weight:500;letter-spacing:.35em;text-transform:uppercase;color:#F2E4C8}
+.name2.n1{left:520px}.name2.n2{left:1400px}
+
+/* ============ SLIDE 03 — PRAYER : by the choir ============ */
+.bg-cream{position:absolute;inset:0;background:linear-gradient(180deg,#FDFAF2 0%,#F7EFDD 58%,#EFE2C8 100%)}
+.s3-glow{position:absolute;left:50%;top:46%;width:1800px;height:1150px;transform:translate(-50%,-50%);
+  background:radial-gradient(50% 50% at 50% 50%,rgba(248,214,138,.55),rgba(248,214,138,.18) 44%,rgba(248,214,138,0) 70%)}
+.s3-disc{position:absolute;left:50%;top:46%;width:340px;height:340px;margin:-170px 0 0 -170px;border-radius:50%;
+  background:radial-gradient(circle,#FFF7DE 0%,#FFE6AC 45%,rgba(255,224,150,0) 74%)}
+.slide.live .s3-disc{animation:sunPulse 8s ease-in-out infinite}
+.s3-halo{position:absolute;left:50%;top:46%;width:680px;height:680px;margin:-340px 0 0 -340px;
+  border:1.5px solid rgba(178,124,46,.4);border-radius:50%}
+.s3-halo2{position:absolute;left:50%;top:46%;width:900px;height:900px;margin:-450px 0 0 -450px;
+  border:1px solid rgba(178,124,46,.2);border-radius:50%}
+.slide.live .s3-halo{animation:breathe 7s ease-in-out infinite}
+.slide.live .s3-halo2{animation:breathe 11s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+.s3-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.s3-content h2{font-size:150px;text-shadow:0 2px 28px rgba(255,240,200,.85)}
+.s3-content .rule{width:130px;margin-top:48px}
+.s3-cap{margin-top:34px;font-size:21px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:#8C6A2F}
+
+/* ============ SLIDE 04 — THOUGHT OF THE DAY : light into darkness ============ */
+.bg-dark2{position:absolute;inset:0;background:radial-gradient(1100px 820px at 86% 92%,#2F2921 0%,#251F19 52%,#1D1914 100%)}
+.beam{position:absolute;left:260px;top:-140px;width:330px;height:1400px;transform-origin:50% 0;transform:rotate(36deg);
+  background:linear-gradient(180deg,rgba(255,224,150,.30),rgba(255,224,150,.10) 55%,rgba(255,224,150,0) 88%);filter:blur(14px)}
+.beam-inner{position:absolute;left:50%;top:0;width:140px;height:100%;transform:translateX(-50%);
+  background:linear-gradient(180deg,rgba(255,232,170,.20),rgba(255,232,170,.06) 60%,rgba(255,232,170,0) 90%);filter:blur(3px)}
+.beam-pool{position:absolute;left:1000px;top:916px;width:480px;height:130px;border-radius:50%;
+  background:radial-gradient(50% 50%,rgba(255,215,140,.18),rgba(255,215,140,0) 70%);filter:blur(10px)}
+.quote-glyph{position:absolute;left:760px;top:330px;font-family:'Playfair Display',serif;font-size:300px;line-height:1;color:rgba(247,231,200,.15)}
+.s4-content{position:absolute;left:1160px;top:318px;width:640px}
+.s4-content h2{font-size:80px}
+.s4-content .rule{width:120px;margin:36px 0 26px}
+.s4-name{font-size:21px;color:#E8B84B}
+
+/* ============ SLIDE 05 — WORD OF THE DAY : altruism ============ */
+.wod-glow{position:absolute;left:50%;top:46%;width:1900px;height:1200px;transform:translate(-50%,-50%);
+  background:radial-gradient(50% 50% at 50% 50%,rgba(248,214,138,.5),rgba(248,214,138,.16) 44%,rgba(248,214,138,0) 70%)}
+.wod-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:0 100px}
+.wod-title{font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:185px;
+  line-height:1.04;letter-spacing:.005em;color:#2B2721}
+.wod-wrap .rule{width:170px;margin-top:44px}
+.wod-word{margin-top:42px;font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:500;
+  font-size:150px;line-height:1.05;color:#B2672F;text-shadow:0 2px 22px rgba(255,240,200,.7)}
+.wod-def{margin-top:40px;font-size:27px;font-weight:500;color:#7A6A4C;letter-spacing:.02em}
+.wod-def span{display:inline-block;margin-right:20px;font-size:15px;font-weight:700;color:#B2672F;
+  letter-spacing:.4em;text-transform:uppercase;transform:translateY(-4px)}
+
+/* ============ SLIDE 06 — QUIZ INTRO : get ready ============ */
+.qi-glow{position:absolute;left:50%;top:30%;width:1500px;height:900px;transform:translate(-50%,-50%);
+  background:radial-gradient(50% 50% at 50% 50%,rgba(255,205,125,.15),rgba(255,205,125,0) 65%)}
+.qi-ghost{position:absolute;right:150px;top:130px;font-family:'Playfair Display',Georgia,serif;
+  font-weight:600;font-size:560px;line-height:1;color:rgba(232,184,75,.07)}
+.qi-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.qi-wrap h2{font-size:180px}
+.qi-wrap .rule{width:130px;margin-top:42px}
+.qi-sub{margin-top:34px;font-family:'Playfair Display',Georgia,serif;font-style:italic;
+  font-weight:500;font-size:40px;color:#F3CD85}
+.qi-qm{margin-top:66px;font-size:15px;color:#E8B84B}
+.qi-names{margin-top:18px;font-size:28px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:#F2E4C8}
+
+/* ============ SLIDES 07–18 — QUIZ : MCQ question → green answer reveal ============ */
+.quiz .bg-cream-quiz{position:absolute;inset:0;background:linear-gradient(180deg,#FBF6EC,#F5EBD9 100%)}
+.corner-arc{position:absolute;right:0;bottom:0;width:240px;height:240px}
+.q-head{position:absolute;left:130px;right:130px;top:84px;display:flex;justify-content:space-between;align-items:flex-end}
+.q-label{font-size:15px;font-weight:600;letter-spacing:.38em;text-transform:uppercase;color:#B2672F}
+.q-count{display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-size:15px;color:#6B5B3E;letter-spacing:.18em}
+.q-count b{font-weight:600;color:#2B2721}
+.q-track{width:190px;height:3px;border-radius:2px;background:rgba(43,39,33,.12);overflow:hidden}
+.q-fill{height:100%;background:linear-gradient(90deg,#C9962F,#E8B84B)}
+.q-ghost{position:absolute;right:90px;top:50%;transform:translateY(-50%);
+  font-family:'Playfair Display',Georgia,serif;font-weight:600;font-size:430px;line-height:1;color:rgba(178,124,46,.08)}
+.q-kicker{font-size:15px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:#B2672F}
+/* — question slide (MCQ) — */
+.q-stage{position:absolute;left:130px;right:130px;top:190px;bottom:96px;display:flex;flex-direction:column;align-items:center}
+.q-qtext{margin-top:22px;max-width:1500px;text-align:center;font-family:'Playfair Display',Georgia,serif;
+  font-weight:600;font-size:58px;line-height:1.22;color:#2B2721}
+.q-lower{margin-top:auto;width:100%;display:flex;gap:34px;align-items:stretch}
+.q-options{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.q-opt{height:168px;border:1.5px solid rgba(43,39,33,.15);border-radius:16px;background:rgba(255,255,255,.6);
+  display:flex;align-items:center;padding:0 34px;gap:28px}
+.q-opt-chip{width:54px;height:54px;border-radius:50%;border:1.5px solid #C9962F;color:#B27E23;
+  display:grid;place-items:center;font-size:22px;font-weight:600;flex:none}
+.q-opt-text{font-size:29px;font-weight:500;color:#33302A}
+.q-imgframe{width:620px;border:1.5px solid rgba(43,39,33,.14);border-radius:18px;
+  background:rgba(255,255,255,.5);overflow:hidden}
+.q-imgframe img{width:100%;height:100%;object-fit:cover;display:block}
+/* — answer slide : all four options, correct one green — */
+.a-glow{position:absolute;left:50%;top:56%;width:1300px;height:700px;transform:translate(-50%,-50%);
+  background:radial-gradient(50% 50% at 50% 50%,rgba(246,209,130,.4),rgba(246,209,130,.12) 45%,rgba(246,209,130,0) 72%)}
+.a-stage{position:absolute;left:130px;right:130px;top:190px;bottom:110px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.a-echo{max-width:1300px;font-family:'Playfair Display',Georgia,serif;font-style:italic;
+  font-weight:500;font-size:32px;line-height:1.4;color:#7A6A4C}
+.a-kicker{margin-top:40px;font-size:15px;font-weight:600;letter-spacing:.5em;text-transform:uppercase;color:#3F8352}
+.a-grid{margin-top:26px;width:1240px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.a-opt{height:150px;border:1.5px solid rgba(43,39,33,.15);border-radius:16px;background:rgba(255,255,255,.55);
+  display:flex;align-items:center;padding:0 30px;gap:26px;opacity:.55}
+.a-opt .num{width:50px;height:50px;border-radius:50%;border:1.5px solid rgba(43,39,33,.25);color:#6B5B3E;
+  display:grid;place-items:center;font-size:20px;font-weight:600;flex:none}
+.a-opt .txt{font-size:27px;font-weight:500;color:#33302A;text-align:left}
+.a-opt .check{width:34px;height:34px;margin-left:auto;flex:none}
+.a-opt .check path{stroke:#fff;stroke-width:3.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.a-opt.correct{opacity:1;border-color:#4E9A62;background:rgba(78,154,98,.10);
+  box-shadow:0 12px 34px rgba(62,124,79,.18)}
+.a-opt.correct .num{border-color:#4E9A62;background:#4E9A62;color:#fff}
+.a-opt.correct .txt{color:#2F6B41;font-weight:600}
+.slide.live .a-opt.correct .num{animation:numPulse 3.2s 1.4s ease-in-out infinite}
+@keyframes numPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+
+/* ============ SLIDE 19 — SPEECH : the spotlight ============ */
+.spot-cone{position:absolute;left:66%;top:0;width:620px;height:1000px;transform:translateX(-50%);
+  clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);
+  background:linear-gradient(180deg,rgba(255,224,150,.34),rgba(255,224,150,.12) 55%,rgba(255,224,150,0));filter:blur(16px)}
+.slide.live .spot-cone{animation:breatheOp 6s ease-in-out infinite}
+@keyframes breatheOp{0%,100%{opacity:1}50%{opacity:.82}}
+.spot-pool{position:absolute;left:66%;top:920px;width:560px;height:96px;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(50% 50%,rgba(255,215,140,.20),rgba(255,215,140,0) 70%);filter:blur(10px)}
+.mic{position:absolute;left:66%;top:240px;width:240px;height:660px;transform:translateX(-50%)}
+.speech-c{position:absolute;left:150px;top:392px}
+.speech-c h2{font-size:112px}
+.speech-c .rule{width:110px;margin:34px 0 26px}
+.speech-name{font-size:22px;color:#E8B84B}
+
+/* ============ SLIDE 20 — ANNOUNCEMENTS : the golden bell ============ */
+.bg-ann{position:absolute;inset:0;background:radial-gradient(1500px 950px at 50% -12%,#3B3226 0%,#2A251F 48%,#211D18 100%)}
+.ann-glow{position:absolute;left:50%;top:290px;width:820px;height:460px;transform:translateX(-50%);
+  background:radial-gradient(50% 50% at 50% 50%,rgba(255,205,125,.16),rgba(255,205,125,0) 65%)}
+.ann-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding-bottom:34px}
+.bell{width:112px;height:122px;filter:drop-shadow(0 0 26px rgba(232,168,66,.55))}
+.slide.live .bell{animation:bellSway 5.5s ease-in-out infinite;transform-origin:50% 10%}
+@keyframes bellSway{0%,100%{transform:rotate(-1.6deg)}50%{transform:rotate(1.6deg)}}
+.ann-wrap h2{margin-top:56px;font-size:108px}
+.ann-wrap .rule{width:130px;margin-top:44px}
+
+/* ============ SLIDE 21 — WORDS OF WISDOM : landscape golden frame ============ */
+.bg-dark3{position:absolute;inset:0;background:radial-gradient(1400px 950px at 71% 48%,#352E23 0%,#272118 55%,#1F1B15 100%)}
+.frame-glow{position:absolute;left:1370px;top:520px;width:720px;height:560px;transform:translate(-50%,-50%);
+  background:radial-gradient(50% 50% at 50% 50%,rgba(255,205,125,.17),rgba(255,205,125,0) 68%)}
+.wis-left{position:absolute;left:150px;top:330px;width:720px}
+.wis-left h2{font-size:96px}
+.wis-left .rule{width:120px;margin-top:40px}
+.portrait{position:absolute;left:970px;top:250px;width:800px}
+.portrait-outer{position:relative;border:1.5px solid rgba(232,184,75,.85);padding:20px}
+.portrait-inner{position:relative;height:540px;border:1px solid rgba(232,184,75,.35);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 100% at 50% 100%,#3A3226 0%,#26221C 72%)}
+.portrait-photo{position:absolute;inset:0;background:radial-gradient(120% 100% at 50% 100%,#3A3226,#26221C 72%)}
+.portrait-photo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.portrait-tint{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(232,184,75,.06),rgba(232,184,75,.06)),
+             linear-gradient(0deg,rgba(30,26,20,.38),rgba(30,26,20,0) 42%)}
+.portrait-shine,.aframe-shine{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.portrait-shine::before,.aframe-shine::before{content:'';position:absolute;top:-20%;bottom:-20%;left:-35%;width:34%;
+  background:linear-gradient(90deg,rgba(255,235,190,0),rgba(255,235,190,.16),rgba(255,235,190,0));
+  transform:skewX(-16deg) translateX(-60%)}
+.slide.live .portrait-shine::before,.slide.live .aframe-shine::before{animation:shine 2.4s 1.1s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes shine{to{transform:skewX(-16deg) translateX(520%)}}
+.portrait-cap{margin-top:30px;text-align:center}
+.portrait-cap .kicker{font-size:21px;letter-spacing:.4em;color:#E8B84B}
+
+/* ============ SLIDE 22 — NATIONAL ANTHEM : image left · title top-right · credit ============ */
+.bg-anthem{position:absolute;inset:0;background:
+  radial-gradient(1100px 640px at 34% 50%,rgba(255,222,152,.42),rgba(255,222,152,0) 62%),
+  linear-gradient(180deg,#FCF6E8 0%,#F6EAD0 60%,#F0E1C2 100%)}
+.anthem-ring{position:absolute;right:40px;top:50px;width:620px;height:620px;opacity:.13;transform-origin:50% 50%}
+.slide.live .anthem-ring{animation:slowSpin 90s linear infinite}
+@keyframes slowSpin{to{transform:rotate(360deg)}}
+.aframe{position:absolute;left:130px;top:250px;width:860px}
+.aframe-outer{position:relative;border:1.5px solid rgba(178,124,46,.8);padding:20px;
+  background:rgba(255,255,255,.35);filter:drop-shadow(0 26px 44px rgba(80,55,12,.18))}
+.aframe-inner{position:relative;height:580px;border:1px solid rgba(178,124,46,.35);overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  background:linear-gradient(180deg,#FFFDF6,#F4E9D2)}
+.aframe-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.aframe-ph{font-size:15px;color:#B27E23;letter-spacing:.42em;text-transform:uppercase;font-weight:600}
+.anthem-title{position:absolute;right:130px;top:236px;text-align:right}
+.anthem-title h2{font-family:'Playfair Display',Georgia,serif;font-weight:600;line-height:1.08;
+  font-size:104px;color:#2B2721;letter-spacing:.005em}
+.anthem-title h2 em{font-style:italic;font-weight:500;color:#B2672F}
+.anthem-title .rule{width:150px;margin-top:44px}
+.anthem-credit{position:absolute;right:130px;bottom:64px;text-align:right;
+  font-size:14px;font-weight:600;letter-spacing:.42em;text-transform:uppercase;color:#8C6A2F}
+
+/* ---------- minimal, auto-fading presenter chrome ---------- */
+#progress{position:absolute;left:0;bottom:0;height:4px;width:0;z-index:20;
+  background:linear-gradient(90deg,#C9962F,#F2D08A);transition:width .7s cubic-bezier(.4,0,.2,1)}
+#counter{position:absolute;right:36px;bottom:28px;z-index:20;font-size:14px;font-weight:500;
+  letter-spacing:.3em;color:#F2E4C8;opacity:.8;transition:color .8s}
+body[data-theme="light"] #counter{color:#57503F}
+#hint{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:20;font-size:12px;font-weight:600;
+  letter-spacing:.26em;text-transform:uppercase;color:#F2E4C8;opacity:.5;white-space:nowrap;
+  transition:opacity 1.2s,color .8s}
+body[data-theme="light"] #hint{color:#57503F}
+#hint.hide{opacity:0}
+
+/* ---------- fullscreen control (button + message) ---------- */
+#fsbtn{position:fixed;top:20px;right:20px;z-index:60;width:46px;height:46px;border-radius:50%;
+  border:1.5px solid rgba(232,184,75,.55);background:rgba(20,17,13,.35);cursor:pointer;
+  display:grid;place-items:center;opacity:.45;padding:0;
+  transition:opacity .35s,background .35s,border-color .35s;
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+#fsbtn:hover{opacity:1;background:rgba(20,17,13,.6);border-color:#E8B84B}
+#fsbtn svg{width:18px;height:18px;stroke:#E8B84B;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+body[data-theme="light"] #fsbtn{border-color:rgba(178,124,46,.5);background:rgba(250,245,236,.45)}
+body[data-theme="light"] #fsbtn svg{stroke:#B27E23}
+#fsmsg{position:fixed;left:50%;bottom:76px;transform:translateX(-50%) translateY(12px);z-index:60;
+  padding:14px 28px;border-radius:999px;background:rgba(22,18,13,.92);color:#F2E4C8;
+  font-size:14px;font-weight:500;letter-spacing:.08em;white-space:nowrap;
+  border:1px solid rgba(232,184,75,.4);opacity:0;pointer-events:none;
+  transition:opacity .45s,transform .45s}
+#fsmsg b{color:#E8B84B;font-weight:700}
+#fsmsg.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .slide.live [data-anim],.slide.live [data-fade]{opacity:1;transform:none;filter:none}
+  .slide.live [data-draw]{transform:scaleX(1)}
+  .draw{stroke-dashoffset:0}
+}
+</style>
+</head>
+<body data-theme="dark">
+<div id="stage">
+<div id="deck">
+
+<!-- shared scenery: rolling golden-hour hills (used on slide 1) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="hills">
+    <path d="M0,660 C220,608 400,652 580,630 C800,604 960,656 1160,632 C1370,608 1570,658 1920,626 L1920,1080 L0,1080 Z" fill="#6E7A50"/>
+    <path d="M0,660 C220,608 400,652 580,630 C800,604 960,656 1160,632 C1370,608 1570,658 1920,626" fill="none" stroke="#F6CE8A" stroke-width="2.5" opacity=".5"/>
+    <path d="M0,782 C300,730 520,792 760,766 C1010,740 1250,802 1490,772 C1660,750 1800,792 1920,774 L1920,1080 L0,1080 Z" fill="#4A5438"/>
+    <path d="M0,906 C320,862 560,908 840,886 C1120,864 1420,912 1920,874 L1920,1080 L0,1080 Z" fill="#2C3324"/>
+  </g>
+</defs></svg>
+
+<!-- ════════ SLIDE 01 · LANDING ════════ -->
+<section class="slide s1" id="s1" data-theme="dark" aria-label="Kindness costs nothing, but means everything. By Class 10G"
+         data-lx="63%" data-ly="57%" data-ls="950px" data-lo=".5">
+  <div class="scene" style="--kb-from:1.03;--kb-to:1.09;--kbd:18s">
+    <div class="sky"></div>
+    <div class="sun-disc"></div>
+    <div class="ray r1"></div><div class="ray r2"></div><div class="ray r3"></div>
+    <svg class="hills" viewBox="0 0 1920 1080" preserveAspectRatio="none"><use href="#hills"/></svg>
+    <div class="haze"></div>
+    <div class="scrim"></div>
+    <div class="motes" data-count="9" style="left:12%;top:26%;width:76%;height:46%"></div>
+  </div>
+  <div class="s1-content">
+    <h1 class="h-display" data-anim style="--d:.5s">Kindness costs nothing,<br><em>but means everything</em></h1>
+    <div class="rule centered" data-draw style="--d:.85s"></div>
+    <div class="byline" data-anim style="--d:1.05s">By Class 10G</div>
+  </div>
+</section>
+
+<!-- ════════ SLIDE 02 · ANCHORING — Aanya & Suhani ════════ -->
+<section class="slide s2" id="s2" data-theme="dark" aria-label="Anchoring. Aanya and Suhani"
+         data-lx="50%" data-ly="30%" data-ls="700px" data-lo=".1">
+  <div class="scene" style="--kb-from:1.06;--kb-to:1.0;--kbd:20s">
+    <div class="bg-dark"></div>
+    <div class="stage-line"></div>
+    <div class="lamp-refl p1" data-fade style="--d:.8s"></div>
+    <div class="lamp-refl p2" data-fade style="--d:.9s"></div>
+    <div class="lamp l1" data-fade style="--d:.55s"></div>
+    <div class="lamp l2" data-fade style="--d:.7s"></div>
+    <svg class="arc" viewBox="0 0 1000 300"><path class="draw" pathLength="1" style="--dd:.85s" d="M60,50 Q500,270 940,50"/></svg>
+  </div>
+  <h2 class="h-display s2-h" data-anim style="--d:.4s">Anchoring</h2>
+  <div class="name2 n1" data-anim style="--d:1s">Aanya</div>
+  <div class="name2 n2" data-anim style="--d:1.15s">Suhani</div>
+</section>
+
+<!-- ════════ SLIDE 03 · PRAYER — by the Choir ════════ -->
+<section class="slide s3" id="s3" data-theme="light" aria-label="Prayer. By Choir"
+         data-lx="50%" data-ly="46%" data-ls="900px" data-lo=".2">
+  <div class="scene" style="--kb-from:1.0;--kb-to:1.04;--kbd:20s">
+    <div class="bg-cream"></div>
+    <div class="s3-glow"></div>
+    <div class="s3-disc" data-fade style="--d:.15s"></div>
+    <div class="s3-halo" data-fade style="--d:.3s"></div>
+    <div class="s3-halo2" data-fade style="--d:.4s"></div>
+    <div class="motes" data-count="12" style="left:28%;top:10%;width:44%;height:58%"></div>
+  </div>
+  <div class="s3-content">
+    <h2 class="h-display ink" data-anim style="--d:.5s">Prayer</h2>
+    <div class="rule centered" data-draw style="--d:.85s"></div>
+    <div class="s3-cap" data-anim style="--d:1.05s">By Choir</div>
+  </div>
+</section>
+
+<!-- ════════ SLIDE 04 · THOUGHT OF THE DAY — Vir Pratap Singh ════════ -->
+<section class="slide s4" id="s4" data-theme="dark" aria-label="Thought of the Day. Vir Pratap Singh"
+         data-lx="30%" data-ly="12%" data-ls="480px" data-lo=".12">
+  <div class="scene" style="--kb-from:1.02;--kb-to:1.05;--kbd:18s">
+    <div class="bg-dark2"></div>
+    <div class="beam" data-fade style="--d:.15s">
+      <div class="beam-inner"></div>
+      <div class="motes" data-count="8"></div>
+    </div>
+    <div class="beam-pool" data-fade style="--d:.35s"></div>
+    <div class="quote-glyph" data-fade style="--d:.6s">&ldquo;</div>
+  </div>
+  <div class="s4-content">
+    <h2 class="h-display" data-anim style="--d:.75s">Thought of<br>the Day</h2>
+    <div class="rule" data-draw style="--d:1s"></div>
+    <div class="s4-name kicker" data-anim style="--d:1.2s">Vir Pratap Singh</div>
+  </div>
+</section>
+
+<!-- ════════ SLIDE 05 · WORD OF THE DAY — altruism ════════ -->
+<section class="slide sWord" id="sWord" data-theme="light" aria-label="Word of the Day: altruism. Meaning: helping others without expecting anything in return"
+         data-lx="50%" data-ly="46%" data-ls="900px" data-lo=".16">
+  <div class="scene" style="--kb-from:1.0;--kb-to:1.03;--kbd:20s">
+    <div class="bg-cream"></div>
+    <div class="wod-glow"></div>
+    <div class="motes" data-count="10" style="left:30%;top:12%;width:40%;height:52%"></div>
+  </div>
+  <div class="wod-wrap">
+    <h2 class="wod-title" data-anim style="--d:.45s">Word of the Day</h2>
+    <div class="rule centered" data-draw style="--d:.8s"></div>
+    <div class="wod-word" data-anim style="--d:1.0s">altruism</div>
+    <div class="wod-def" data-anim style="--d:1.25s"><span>Meaning</span>Helping others without expecting anything in return.</div>
+  </div>
+</section>
+
+<!-- ════════ SLIDE 06 · QUIZ INTRO — Get Ready · Aradhya & Deetya ════════ -->
+<section class="slide sQuizIntro" id="sQuizIntro" data-theme="dark"
+         aria-label="Quiz. Get ready. Quizmasters Aradhya and Deetya"
+         data-lx="50%" data-ly="26%" data-ls="780px" data-lo=".18">
+  <div class="scene" style="--kb-from:1.05;--kb-to:1.0;--kbd:18s">
+    <div class="bg-dark"></div>
+    <div class="qi-glow" data-fade style="--d:.15s"></div>
+    <div class="qi-ghost" data-fade style="--d:.3s">?</div>
+    <div class="motes" data-count="10" style="left:30%;top:18%;width:40%;height:50%"></div>
+  </div>
+  <div class="qi-wrap">
+    <h2 class="h-display" data-anim style="--d:.4s">Quiz</h2>
+    <div class="rule centered" data-draw style="--d:.7s"></div>
+    <div class="qi-sub" data-anim style="--d:.85s">Get Ready</div>
+    <div class="qi-qm kicker" data-anim style="--d:1.05s">Quizmasters</div>
+    <div class="qi-names" data-anim style="--d:1.2s">Aradhya &amp; Deetya</div>
+  </div>
+</section>
+
+<!-- ════════ SLIDES 07–18 · QUIZ — 6 MCQ questions + 6 green-answer reveals, generated by script ════════ -->
+
+<!-- ════════ SLIDE 19 · SPEECH — Suhani D. Kumar ════════ -->
+<section class="slide sSpeech" id="sSpeech" data-theme="dark" aria-label="Speech. Suhani D. Kumar"
+         data-lx="50%" data-ly="16%" data-ls="780px" data-lo=".2">
+  <div class="scene" style="--kb-from:1.03;--kb-to:1.07;--kbd:18s">
+    <div class="bg-dark"></div>
+    <div class="spot-cone" data-fade style="--d:.2s"></div>
+    <div class="spot-pool" data-fade style="--d:.35s"></div>
+    <div class="motes" data-count="7" style="left:52%;top:16%;width:28%;height:66%"></div>
+    <svg class="mic" viewBox="0 0 240 660" fill="none" data-fade style="--d:.5s">
+      <line class="draw" pathLength="1" style="--dd:.55s" x1="120" y1="652" x2="120" y2="188" stroke="#EFE3C6" stroke-width="4" stroke-linecap="round"/>
+      <path class="draw" pathLength="1" style="--dd:.65s" d="M62,652 H178" stroke="#EFE3C6" stroke-width="4" stroke-linecap="round"/>
+      <path class="draw" pathLength="1" style="--dd:.7s" d="M120,188 v22" stroke="#EFE3C6" stroke-width="4" stroke-linecap="round"/>
+      <g transform="rotate(14 120 210)">
+        <rect class="draw" pathLength="1" style="--dd:.8s" x="86" y="88" width="68" height="122" rx="34" stroke="#E8B84B" stroke-width="4" fill="rgba(255,235,200,.05)"/>
+        <line class="draw" pathLength="1" style="--dd:1s" x1="97" y1="124" x2="143" y2="124" stroke="#E8B84B" stroke-width="2.5" opacity=".85"/>
+        <line class="draw" pathLength="1" style="--dd:1.08s" x1="97" y1="150" x2="143" y2="150" stroke="#E8B84B" stroke-width="2.5" opacity=".85"/>
+        <line class="draw" pathLength="1" style="--dd:1.16s" x1="97" y1="176" x2="143" y2="176" stroke="#E8B84B" stroke-width="2.5" opacity=".85"/>
+      </g>
+    </svg>
+  </div>
+  <div class="speech-c">
+    <h2 class="h-display" data-anim style="--d:.65s">Speech</h2>
+    <div class="rule" data-draw style="--d:.9s"></div>
+    <div class="speech-name kicker" data-anim style="--d:1.1s">Suhani D. Kumar</div>
+  </div>
+</section>
+
+<!-- ════════ SLIDE 20 · ANNOUNCEMENTS — the golden bell ════════ -->
+<section class="slide sAnn" id="sAnn" data-theme="dark" aria-label="Announcements"
+         data-lx="50%" data-ly="22%" data-ls="700px" data-lo=".16">
+  <div class="scene" style="--kb-from:1.04;--kb-to:1.0;--kbd:20s">
+    <div class="bg-ann"></div>
+    <div class="ann-glow" data-fade style="--d:.2s"></div>
+  </div>
+  <div class="ann-wrap">
+    <svg class="bell" viewBox="0 0 120 130" fill="none" stroke="#E8B84B" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" data-fade style="--d:.45s">
+      <path class="draw" pathLength="1" style="--dd:.6s" d="M60 14 C38 14 26 32 26 56 L26 82 C26 89 20 93 15 98 L105 98 C100 93 94 89 94 82 L94 56 C94 32 82 14 60 14 Z"/>
+      <path class="draw" pathLength="1" style="--dd:.95s" d="M48 108 A12 12 0 0 0 72 108"/>
+      <line class="draw" pathLength="1" style="--dd:1.1s" x1="60" y1="14" x2="60" y2="6"/>
+    </svg>
+    <h2 class="h-display" data-anim style="--d:.6s">Announcements</h2>
+    <div class="rule centered" data-draw style="--d:.95s"></div>
+  </div>
+</section>
+
+<!-- ════════ SLIDE 21 · WORDS OF WISDOM — Principal Sir (landscape frame) ════════ -->
+<section class="slide sWis" id="sWis" data-theme="dark" aria-label="Words of Wisdom. Principal Sir"
+         data-lx="71%" data-ly="48%" data-ls="700px" data-lo=".22">
+  <div class="scene" style="--kb-from:1.02;--kb-to:1.05;--kbd:20s">
+    <div class="bg-dark3"></div>
+    <div class="frame-glow" data-fade style="--d:.3s"></div>
+  </div>
+  <div class="wis-left">
+    <h2 class="h-display" data-anim style="--d:.45s">Words of<br>Wisdom</h2>
+    <div class="rule" data-draw style="--d:.8s"></div>
+  </div>
+  <div class="portrait" data-anim style="--d:.55s">
+    <div class="portrait-outer">
+      <div class="portrait-inner">
+        <div class="portrait-photo"></div>
+        <svg class="sunmark" viewBox="0 0 84 84" fill="none" stroke="#C9962F" stroke-width="2" stroke-linecap="round">
+          <circle cx="42" cy="42" r="17"/>
+          <g opacity=".9"><line x1="42" y1="10" x2="42" y2="21"/><line x1="42" y1="63" x2="42" y2="74"/>
+          <line x1="10" y1="42" x2="21" y2="42"/><line x1="63" y1="42" x2="74" y2="42"/>
+          <line x1="20" y1="20" x2="27" y2="27"/><line x1="57" y1="57" x2="64" y2="64"/>
+          <line x1="64" y1="20" x2="57" y2="27"/><line x1="27" y1="57" x2="20" y2="64"/></g>
+        </svg>
+        <!-- ▼ Principal Sir's photograph (falls back to the sun emblem if offline).
+             For the assembly: save the image as principal.jpg beside this file and
+             change the src below to "principal.jpg" -->
+        <img class="portrait-photo-img" src="principal.jpg" alt="Principal Sir" onerror="this.remove()">
+        <div class="portrait-tint"></div>
+      </div>
+      <div class="portrait-shine"></div>
+    </div>
+    <div class="portrait-cap">
+      <div class="kicker" data-anim style="--d:.95s">Principal Sir</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SLIDE 22 · NATIONAL ANTHEM — final slide · image left · title top-right · credit ════════ -->
+<section class="slide sAnthem" id="sAnthem" data-theme="light" aria-label="National Anthem. PPT by Sahitya and Siddharth"
+         data-lx="29%" data-ly="52%" data-ls="700px" data-lo=".12">
+  <div class="scene" style="--kb-from:1.0;--kb-to:1.03;--kbd:20s">
+    <div class="bg-anthem"></div>
+    <svg class="anthem-ring" viewBox="0 0 620 620" fill="none" stroke="#C9962F" data-fade style="--d:.3s">
+      <circle cx="310" cy="310" r="292" stroke-width="2"/>
+      <circle cx="310" cy="310" r="16" stroke-width="2"/>
+      <g class="spokes" transform="translate(310,310)" stroke-width="2" opacity=".75"></g>
+    </svg>
+  </div>
+  <div class="aframe" data-anim style="--d:.4s">
+    <div class="aframe-outer">
+      <div class="aframe-inner">
+        <!-- ▼ FLAG IMAGE PLACEHOLDER — save your flag image as flag.jpg in the same
+             folder as this file and it will automatically appear in this frame. -->
+        <img class="aframe-img" src="flag.jpg" alt="Flag of India" onerror="this.remove()">
+        <svg class="sunmark big" viewBox="0 0 84 84" fill="none" stroke="#C9962F" stroke-width="2" stroke-linecap="round">
+          <circle cx="42" cy="42" r="17"/>
+          <g opacity=".9"><line x1="42" y1="10" x2="42" y2="21"/><line x1="42" y1="63" x2="42" y2="74"/>
+          <line x1="10" y1="42" x2="21" y2="42"/><line x1="63" y1="42" x2="74" y2="42"/>
+          <line x1="20" y1="20" x2="27" y2="27"/><line x1="57" y1="57" x2="64" y2="64"/>
+          <line x1="64" y1="20" x2="57" y2="27"/><line x1="27" y1="57" x2="20" y2="64"/></g>
+        </svg>
+        <div class="aframe-ph">Flag of India</div>
+      </div>
+      <div class="aframe-shine"></div>
+    </div>
+  </div>
+  <div class="anthem-title">
+    <h2 data-anim style="--d:.6s">National<br><em>Anthem</em></h2>
+    <div class="rule centered" data-draw style="--d:.95s"></div>
+  </div>
+  <div class="anthem-credit" data-anim style="--d:1.2s">PPT by Sahitya &amp; Siddharth</div>
+</section>
+
+<!-- traveling golden light (the deck's Morph motif) -->
+<div id="lightfx" aria-hidden="true"><div class="orb"></div></div>
+<div id="vignette" aria-hidden="true"></div>
+<div id="grain" aria-hidden="true"></div>
+<div id="progress"></div>
+<div id="counter">01 / 22</div>
+<div id="hint">&larr;&nbsp;&rarr; or click to advance&nbsp;&nbsp;&middot;&nbsp;&nbsp;F / F11 fullscreen</div>
+
+</div>
+</div>
+
+<!-- fullscreen toggle button (kept outside #stage so it never advances slides) -->
+<button id="fsbtn" aria-label="Toggle fullscreen" title="Fullscreen (F)">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+</button>
+<div id="fsmsg">Fullscreen is blocked in this window &mdash; press <b>F11</b> or open the file directly in Chrome / Edge / Firefox.</div>
+
+<noscript><div style="position:fixed;inset:0;display:grid;place-items:center;background:#141210;color:#F2E4C8;font-family:Georgia,serif;text-align:center;padding:40px">This presentation needs JavaScript. Please open it in a modern browser.</div></noscript>
+
+<script>
+(function(){
+"use strict";
+
+/* ══════════════════════════════════════════════════════════════
+   QUIZ CONTENT — 6 multiple-choice questions (Slides 7–18)
+   Each entry creates TWO slides: a Question slide with four
+   options, then an Answer slide that shows ALL FOUR options
+   again with the correct one highlighted in green.
+     q       : the question text
+     options : four option texts
+     correct : index (0–3) of the correct option
+     img     : optional image URL shown beside the options
+   ══════════════════════════════════════════════════════════════ */
+const QUIZ=[
+ {q:"Why is listening carefully to someone also an act of kindness?",
+  options:["It shows that you value their feelings","It makes you look important","It helps you win arguments","It makes conversations shorter"],
+  correct:0,img:""},
+ {q:"Which hormone is often called the “stress hormone”?",
+  options:["Insulin","Oxytocin","Thyroxine","Cortisol"],
+  correct:3,img:""},
+ {q:"Which of these is an example of integrity?",
+  options:["Blaming someone else","Lying to avoid trouble","Telling the truth even when it is difficult","Hiding your mistake"],
+  correct:2,img:""},
+ {q:"Which activity can naturally support a healthy mood and well-being?",
+  options:["Constant sleep","Regular physical exercise","Skipping meals","Avoiding all social media interaction"],
+  correct:1,img:""},
+ {q:"Which is the best example of kindness without expecting anything in return?",
+  options:["Helping someone only because a teacher is watching","Sharing your notes with someone who missed class","Helping someone because you want a prize","Being kind only to your friends"],
+  correct:1,img:""},
+ {q:"A student is feeling stressed because they have too much work. What should they do first?",
+  options:["Panic about everything","Make a simple to-do list","Ignore all the work","Skip meals to finish faster"],
+  correct:1,img:""}
+];
+
+const pad=n=>String(n).padStart(2,"0");
+
+/* ---- build the quiz slide pairs (inserted before the Speech slide) ---- */
+function head(n,len){
+  return `<div class="q-head" data-anim style="--d:.1s">
+    <div class="q-label">Kindness &middot; Quiz</div>
+    <div class="q-count"><div><b>${pad(n)}</b> <span>/ ${pad(len)}</span></div>
+      <div class="q-track"><div class="q-fill" style="width:${(n/len*100).toFixed(1)}%"></div></div></div>
+  </div>`;
+}
+function qslide(n,len,d){
+  const s=document.createElement("section");
+  s.className="slide quiz"; s.dataset.theme="light";
+  s.setAttribute("aria-label","Quiz question "+n+" of "+len);
+  s.setAttribute("data-lx","50%");s.setAttribute("data-ly","18%");
+  s.setAttribute("data-ls","560px");s.setAttribute("data-lo",".07");
+  const opts=[1,2,3,4].map((num,k)=>
+    `<div class="q-opt" data-anim style="--d:${(0.55+k*0.12).toFixed(2)}s">
+       <span class="q-opt-chip">${num}</span>
+       <span class="q-opt-text">${(d.options&&d.options[k])?d.options[k]:("Option "+num)}</span>
+     </div>`).join("");
+  s.innerHTML=`
+   <div class="scene" style="--kb-from:1.0;--kb-to:1.015;--kbd:20s">
+     <div class="bg-cream-quiz"></div>
+     <div class="q-ghost" data-fade style="--d:.15s">${pad(n)}</div>
+     <svg class="corner-arc" viewBox="0 0 240 240" fill="none"><path d="M240,6 A234,234 0 0 1 6,240" stroke="#D9B25E" stroke-width="2" opacity=".55"/></svg>
+   </div>
+   ${head(n,len)}
+   <div class="q-stage">
+     <div class="q-kicker" data-anim style="--d:.25s">Question</div>
+     <p class="q-qtext" data-anim style="--d:.42s">${d.q?d.q:("Question "+n)}</p>
+     <div class="q-lower">
+       <div class="q-options">${opts}</div>
+       ${d.img?`<div class="q-imgframe" data-anim style="--d:.6s"><img src="${d.img}" alt="Question illustration"></div>`:""}
+     </div>
+   </div>`;
+  return s;
+}
+function aslide(n,len,d){
+  const s=document.createElement("section");
+  s.className="slide quiz answer"; s.dataset.theme="light";
+  s.setAttribute("aria-label","Answer to quiz question "+n+" of "+len);
+  s.setAttribute("data-lx","50%");s.setAttribute("data-ly","54%");
+  s.setAttribute("data-ls","640px");s.setAttribute("data-lo",".1");
+  const ci=(typeof d.correct==="number"&&d.correct>=0&&d.correct<4)?d.correct:0;
+  const opts=[1,2,3,4].map((num,k)=>{
+    const cor=k===ci, txt=(d.options&&d.options[k])?d.options[k]:("Option "+num);
+    return `<div class="a-opt${cor?" correct":""}" data-anim style="--d:${(0.5+k*0.14).toFixed(2)}s">
+      <span class="num">${num}</span><span class="txt">${txt}</span>
+      ${cor?`<svg class="check" viewBox="0 0 28 28" aria-hidden="true"><path class="draw" pathLength="1" style="--dd:1.25s" d="M7 14.5 L12 19.5 L21 9"/></svg>`:""}
+    </div>`;}).join("");
+  s.innerHTML=`
+   <div class="scene" style="--kb-from:1.0;--kb-to:1.015;--kbd:20s">
+     <div class="bg-cream-quiz"></div>
+     <div class="a-glow" data-fade style="--d:.2s"></div>
+     <div class="q-ghost" data-fade style="--d:.15s">${pad(n)}</div>
+     <svg class="corner-arc" viewBox="0 0 240 240" fill="none"><path d="M240,6 A234,234 0 0 1 6,240" stroke="#D9B25E" stroke-width="2" opacity=".55"/></svg>
+   </div>
+   ${head(n,len)}
+   <div class="a-stage">
+     <p class="a-echo" data-anim style="--d:.18s">${d.q?d.q:("Question "+n)}</p>
+     <div class="a-kicker" data-anim style="--d:.4s">Correct Answer</div>
+     <div class="a-grid">${opts}</div>
+   </div>`;
+  return s;
+}
+const sSpeech=document.getElementById("sSpeech");
+QUIZ.forEach((d,i)=>{
+  sSpeech.parentNode.insertBefore(qslide(i+1,QUIZ.length,d),sSpeech);
+  sSpeech.parentNode.insertBefore(aslide(i+1,QUIZ.length,d),sSpeech);
+});
+
+/* ---- draw the 24 spokes of the anthem's rotating ring ---- */
+document.querySelectorAll(".anthem-ring .spokes").forEach(g=>{
+  const NS="http://www.w3.org/2000/svg";
+  for(let i=0;i<24;i++){const l=document.createElementNS(NS,"line");
+    l.setAttribute("x1","0");l.setAttribute("y1","-30");
+    l.setAttribute("x2","0");l.setAttribute("y2","-284");
+    l.setAttribute("transform",`rotate(${i*15})`);g.appendChild(l);}
+});
+
+/* ---- atmosphere particles ---- */
+function spawn(sel){
+  document.querySelectorAll(sel).forEach(box=>{
+    const n=+box.dataset.count||8,frag=document.createDocumentFragment();
+    for(let i=0;i<n;i++){
+      const sp=document.createElement("span"),r=Math.random;
+      const sz=(3+r()*4).toFixed(1);
+      sp.style.cssText=`width:${sz}px;height:${sz}px;left:${(4+r()*92).toFixed(1)}%;top:${(10+r()*80).toFixed(1)}%;`+
+        `--md:${(8+r()*8).toFixed(1)}s;--mdel:${(-r()*12).toFixed(1)}s;`+
+        `--mdx:${(r()*120-60).toFixed(0)}px;--mdy:${(-70-r()*160).toFixed(0)}px;`+
+        `--mo:${(0.2+r()*0.42).toFixed(2)}`;
+      frag.appendChild(sp);}
+    box.appendChild(frag);
+  });
+}
+spawn(".motes");
+
+/* ---- robust fullscreen (F key or corner button, with F11 fallback message) ---- */
+const fsbtn=document.getElementById("fsbtn"),fsmsg=document.getElementById("fsmsg");
+const FSICONS={
+  expand:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
+  exit:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>'
+};
+function fsElement(){
+  return document.fullscreenElement||document.webkitFullscreenElement||
+         document.mozFullScreenElement||document.msFullscreenElement;
+}
+function setFsIcon(){fsbtn.innerHTML=fsElement()?FSICONS.exit:FSICONS.expand}
+let fsMsgT=null;
+function fsBlocked(){
+  clearTimeout(fsMsgT);
+  fsmsg.classList.add("show");
+  fsMsgT=setTimeout(()=>fsmsg.classList.remove("show"),4500);
+}
+function toggleFS(){
+  const d=document;
+  if(fsElement()){
+    const ex=d.exitFullscreen||d.webkitExitFullscreen||d.mozCancelFullScreen||d.msExitFullscreen;
+    if(ex)ex.call(d);
+    return;
+  }
+  const el=d.documentElement;
+  const req=el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen||el.msRequestFullscreen;
+  if(!req){fsBlocked();return}
+  try{
+    const p=req.call(el);
+    if(p&&typeof p.catch==="function")p.catch(fsBlocked);
+  }catch(err){fsBlocked()}
+}
+fsbtn.addEventListener("click",e=>{e.stopPropagation();toggleFS()});
+["fullscreenchange","webkitfullscreenchange","mozfullscreenchange","MSFullscreenChange"]
+  .forEach(ev=>document.addEventListener(ev,setFsIcon));
+setFsIcon();
+
+/* ---- navigation & cinematic transitions ---- */
+const deck=document.getElementById("deck"),stage=document.getElementById("stage");
+const slides=[...document.querySelectorAll(".slide")],total=slides.length;
+const progress=document.getElementById("progress"),counter=document.getElementById("counter"),
+      hint=document.getElementById("hint"),light=document.getElementById("lightfx");
+let idx=-1;
+
+function go(n,dir,user){
+  n=Math.max(0,Math.min(total-1,n));if(n===idx)return;
+  if(idx>-1){const cur=slides[idx];
+    cur.classList.remove("active");cur.classList.add("leaving","live");
+    cur.style.setProperty("--lx2",dir>0?"-2.2%":"2.2%");
+    setTimeout(()=>{cur.classList.remove("leaving","live");cur.style.removeProperty("--lx2")},980);}
+  const nxt=slides[n];
+  nxt.style.transform=dir>0?"translateX(2.6%) scale(1.015)":"translateX(-2.6%) scale(1.015)";
+  void nxt.offsetWidth;               /* start position, then settle — smooth push-fade */
+  nxt.style.transform="";
+  nxt.classList.add("active","live");
+  idx=n;
+  const d=nxt.dataset;                /* the golden light travels to its next position */
+  light.style.setProperty("--lx",d.lx||"50%");light.style.setProperty("--ly",d.ly||"50%");
+  light.style.setProperty("--ls",d.ls||"2px");light.style.setProperty("--lo",d.lo||"0");
+  document.body.dataset.theme=d.theme||"dark";
+  progress.style.width=((n+1)/total*100)+"%";
+  counter.textContent=pad(n+1)+" / "+pad(total);
+  slides.forEach((s,i)=>s.setAttribute("aria-hidden",i!==n));
+  if(user)hint.classList.add("hide");
+}
+
+addEventListener("keydown",e=>{
+  const k=e.key;
+  if(k==="ArrowRight"||k==="ArrowDown"||k==="PageDown"||k===" "||k==="Enter"){e.preventDefault();go(idx+1,1,true)}
+  else if(k==="ArrowLeft"||k==="ArrowUp"||k==="PageUp"){e.preventDefault();go(idx-1,-1,true)}
+  else if(k==="Home")go(0,-1,true);
+  else if(k==="End")go(total-1,1,true);
+  else if(k==="f"||k==="F"||e.code==="KeyF"){e.preventDefault();toggleFS()}
+});
+let px=null,swiped=false;
+stage.addEventListener("pointerdown",e=>{px=e.clientX});
+stage.addEventListener("pointerup",e=>{if(px===null)return;const dx=e.clientX-px;px=null;
+  if(Math.abs(dx)>60){swiped=true;go(idx+(dx<0?1:-1),dx<0?1:-1,true);setTimeout(()=>swiped=false,80)}});
+stage.addEventListener("click",()=>{if(!swiped)go(idx+1,1,true)});
+
+/* ---- fit the 1920×1080 cinema frame to the window, hard-centered ---- */
+function fit(){
+  const vw=document.documentElement.clientWidth||innerWidth,
+        vh=document.documentElement.clientHeight||innerHeight,
+        s=Math.min(vw/1920,vh/1080);
+  deck.style.transform="translate(-50%,-50%) scale("+s.toFixed(4)+")";
+}
+addEventListener("resize",fit);
+addEventListener("orientationchange",fit);
+document.addEventListener("fullscreenchange",()=>setTimeout(fit,150));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+fit();setTimeout(fit,120);setTimeout(fit,700);
+
+setTimeout(()=>hint.classList.add("hide"),7000);
+go(0,1,false);
+})();
+</script>
+</body>
+</html>
